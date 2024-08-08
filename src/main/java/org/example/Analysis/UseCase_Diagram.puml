@@ -1,0 +1,49 @@
+@startuml
+
+left to right direction
+
+actor LibraryManager
+actor Visitor
+actor Parent
+actor Student
+actor Employee
+actor Teacher
+actor Manager
+
+
+
+
+
+
+
+Manager -- (Manage Teacher)
+Manager -- (Manage Classes)
+Manager -- (Manage Subjects)
+Manager -- (Manage Student)
+Manager -- (Manage Parent)
+Manager -- (Manage Library Manager)
+
+
+Teacher -- (Update Grades)
+Teacher -- (Write Notes)
+Teacher -- (Filter Page)
+
+Employee -- (View Account)
+Employee -- (View Salaries)
+
+Student -- (View Profile)
+Student -- (View Current Year File)
+Student -- (View Previous Years File)
+
+Parent -- (Monitor Child's Progress)
+Parent -- (Request Absence)
+Parent -- (Send Attest)
+
+Visitor -- (View Website)
+Visitor -- (View Wall Magazine)
+Visitor -- (View Subjects)
+
+LibraryManager -- (Manage Book)
+LibraryManager -- (Accept Extension Requests)
+LibraryManager -- (Reject Extension Requests)
+@enduml

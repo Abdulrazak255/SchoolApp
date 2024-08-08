@@ -1,0 +1,19 @@
+@startuml
+actor User
+participant FrontEnd
+participant LoginController
+participant AuthenticationService
+participant UserRepository
+
+User -> FrontEnd: Enter Username and Password
+FrontEnd -> LoginController: Forward Credentials
+LoginController -> AuthenticationService: Authenticate Credentials
+AuthenticationService -> UserRepository: Load User Details
+UserRepository -> AuthenticationService: User Details
+AuthenticationService -> LoginController: Authentication Result
+LoginController -> FrontEnd: Prompt to Select Role
+User -> FrontEnd: Select Role (Manager, Teacher, etc.)
+FrontEnd -> LoginController: Forward Role Selection
+LoginController -> FrontEnd: Redirect to Appropriate Dashboard
+FrontEnd -> User: Display Dashboard
+@enduml

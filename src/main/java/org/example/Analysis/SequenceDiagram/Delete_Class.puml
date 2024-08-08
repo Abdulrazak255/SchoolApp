@@ -1,0 +1,23 @@
+@startuml
+actor Manager
+participant FrontEnd
+participant ClassManagerController
+participant ClassManagerService
+participant ClassManagerRepository
+participant ArchiveService
+participant ArchiveRepository
+
+Manager -> FrontEnd: Request to Delete Class
+FrontEnd -> ClassManagerController: Forward Delete Class Request
+ClassManagerController -> ClassManagerService: Process Delete Class Request
+ClassManagerService -> ClassManagerRepository: Mark Class as Deleted
+ClassManagerRepository -> ClassManagerService: Confirmation of Deletion
+ClassManagerService -> ArchiveService: Archive Class Data
+ArchiveService -> ArchiveRepository: Save Class Data
+ArchiveRepository -> ArchiveService: Confirmation of Archiving
+ArchiveService -> ClassManagerService: Notify About Archived Class Data
+ClassManagerService -> ClassManagerController: Notify About Deletion and Archiving
+ClassManagerController -> FrontEnd: Send Confirmation Message
+FrontEnd -> Manager: Display Confirmation
+
+@enduml

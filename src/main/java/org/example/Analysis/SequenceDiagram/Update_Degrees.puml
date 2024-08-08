@@ -1,0 +1,16 @@
+@startuml
+actor Teacher
+participant GradeController
+participant GradeService
+participant GradeRepository
+participant FrontEnd
+
+Teacher -> GradeController: Submit Updated Grades
+GradeController -> GradeService: Update Grades
+GradeService -> GradeRepository: Save Grades
+GradeRepository -> GradeService: Update Confirmation
+GradeService -> GradeController: Notify About Updated Grades
+GradeController -> FrontEnd: Send Notification Message
+FrontEnd -> Teacher: Display Confirmation
+FrontEnd -> Student: Display Updated Grades Notification
+@enduml

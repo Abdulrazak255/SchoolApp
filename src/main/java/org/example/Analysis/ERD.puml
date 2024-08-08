@@ -1,0 +1,134 @@
+@startuml
+
+entity User {
+  * id: Long <<PK>>
+  * username: String
+  * password: String
+  * role: UserRole <<FK>>
+  * profile_photo: BLOB
+  * date_created: Timestamp
+}
+
+entity Role {
+  * id: Long <<PK>>
+  * role_name: String
+}
+
+entity Student {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * first_name: String
+  * last_name: String
+  * date_of_birth: Date
+  * enrollment_year: Year
+  * address: String
+  * phone_number: String
+}
+
+entity Teacher {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * first_name: String
+  * last_name: String
+  * hire_date: Date
+  * subject_id: Long <<FK>>
+}
+
+entity Employee {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * employee_id: String
+  * salary: Decimal(10, 2)
+}
+
+entity Manager {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * managed_departments: String
+}
+
+entity Librarian {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * library_name: String
+}
+
+entity Parent {
+  * id: Long <<PK>>
+  * user_id: Long <<FK>>
+  * address: String
+  * phone_number: String
+}
+
+entity Class {
+  * id: Long <<PK>>
+  * class_name: String
+  * academic_year: Year
+}
+
+entity Subject {
+  * id: Long <<PK>>
+  * subject_name: String
+  * subject_code: String
+}
+
+entity Attendance {
+  * id: Long <<PK>>
+  * student_id: Long <<FK>>
+  * date: Date
+  * status: String
+}
+
+entity Book {
+  * id: Long <<PK>>
+  * isbn: String
+  * title: String
+  * author: String
+  * published_year: Year
+  * copies_available: Int
+}
+
+entity Loan {
+  * id: Long <<PK>>
+  * book_id: Long <<FK>>
+  * student_id: Long <<FK>>
+  * borrowed_date: Date
+  * return_date: Date
+  * status: String
+  * is_extended: Boolean
+}
+
+entity Archive {
+  * id: Long <<PK>>
+  * entity_type: String
+  * entity_id: Long
+  * data: BLOB
+  * date_archived: Timestamp
+}
+
+entity Library {
+  * id: Long <<PK>>
+  * name: String
+  * location: String
+}
+
+' Relationships
+User ||--o{ Role : "has a"
+Role ||--o{ User : "assigned to"
+User ||--|| Student : "has a"
+User ||--|| Teacher : "has a"
+User ||--|| Employee : "has a"
+User ||--|| Manager : "has a"
+User ||--|| Librarian : "has a"
+User ||--|| Parent : "has a"
+Student ||--o{ Class : "enrolled in"
+Teacher ||--o{ Subject : "teaches"
+Subject ||--o{ Class : "belongs to"
+Student ||--o{ Attendance : "has"
+Book ||--o{ Loan : "borrowed in"
+Student ||--o{ Loan : "borrows"
+Archive ||--o{ User : "archives"
+Archive ||--o{ Book : "archives"
+Library ||--o{ Book : "contains"
+
+@enduml

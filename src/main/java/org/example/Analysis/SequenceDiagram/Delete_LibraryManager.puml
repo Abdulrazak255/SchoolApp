@@ -1,0 +1,22 @@
+@startuml
+actor Manager
+participant FrontEnd
+participant LibraryManagerController
+participant LibraryManagerService
+participant LibraryManagerRepository
+participant ArchiveService
+participant ArchiveRepository
+
+Manager -> FrontEnd: Request to Delete Library Manager
+FrontEnd -> LibraryManagerController: Forward Delete Library Manager Request
+LibraryManagerController -> LibraryManagerService: Process Delete Library Manager Request
+LibraryManagerService -> LibraryManagerRepository: Mark Library Manager as Deleted
+LibraryManagerRepository -> LibraryManagerService: Confirmation of Deletion
+LibraryManagerService -> ArchiveService: Archive Library Manager Data
+ArchiveService -> ArchiveRepository: Save Library Manager Data
+ArchiveRepository -> ArchiveService: Confirmation of Archiving
+ArchiveService -> LibraryManagerService: Notify About Archived Library Manager Data
+LibraryManagerService -> LibraryManagerController: Notify About Deletion and Archiving
+LibraryManagerController -> FrontEnd: Send Confirmation Message
+FrontEnd -> Manager: Display Confirmation
+@enduml

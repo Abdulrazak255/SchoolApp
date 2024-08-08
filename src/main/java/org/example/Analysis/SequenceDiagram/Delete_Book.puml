@@ -1,0 +1,22 @@
+@startuml
+actor LibraryManager
+participant FrontEnd
+participant BookController
+participant BookService
+participant BookRepository
+participant ArchiveService
+participant ArchiveRepository
+
+LibraryManager -> FrontEnd: Request to Delete Book
+FrontEnd -> BookController: Forward Delete Book Request
+BookController -> BookService: Process Delete Book Request
+BookService -> BookRepository: Mark Book as Deleted
+BookRepository -> BookService: Confirmation of Deletion
+BookService -> ArchiveService: Archive Book Data
+ArchiveService -> ArchiveRepository: Save Book Data
+ArchiveRepository -> ArchiveService: Confirmation of Archiving
+ArchiveService -> BookService: Notify About Archived Book Data
+BookService -> BookController: Notify About Deletion and Archiving
+BookController -> FrontEnd: Send Confirmation Message
+FrontEnd -> LibraryManager: Display Confirmation
+@enduml

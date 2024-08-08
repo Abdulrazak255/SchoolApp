@@ -1,0 +1,15 @@
+@startuml
+actor Parent
+participant AbsenceRequestController
+participant AbsenceRequestService
+participant AbsenceRequestRepository
+participant FrontEnd
+
+Parent -> AbsenceRequestController: Submit Absence Request
+AbsenceRequestController -> AbsenceRequestService: Process Absence Request
+AbsenceRequestService -> AbsenceRequestRepository: Save Absence Request
+AbsenceRequestRepository -> AbsenceRequestService: Confirmation
+AbsenceRequestService -> AbsenceRequestController: Notify About Absence Request
+AbsenceRequestController -> FrontEnd: Send Acknowledgment Message
+FrontEnd -> Parent: Display Acknowledgment
+@enduml

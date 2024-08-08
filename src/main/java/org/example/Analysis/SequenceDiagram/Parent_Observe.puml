@@ -1,0 +1,16 @@
+@startuml
+actor Parent
+participant FrontEnd
+participant ParentController
+participant StudentService
+participant StudentRepository
+
+Parent -> FrontEnd: Request Student Progress
+FrontEnd -> ParentController: Forward Progress Request
+ParentController -> StudentService: Retrieve Student Progress
+StudentService -> StudentRepository: Fetch Student Data
+StudentRepository -> StudentService: Return Student Data
+StudentService -> ParentController: Send Student Progress
+ParentController -> FrontEnd: Send Progress Information
+FrontEnd -> Parent: Display Student Progress
+@enduml

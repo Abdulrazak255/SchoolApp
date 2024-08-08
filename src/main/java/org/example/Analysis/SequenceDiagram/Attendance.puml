@@ -1,0 +1,19 @@
+@startuml
+
+actor Manager
+participant FrontEnd
+participant AttendanceController
+participant AttendanceService
+participant AttendanceRepository
+
+Manager -> FrontEnd: Request Attendance Management
+FrontEnd -> AttendanceController: Forward Attendance Request
+AttendanceController -> AttendanceService: Process Attendance Request
+AttendanceService -> AttendanceRepository: Update Attendance Records
+AttendanceRepository -> AttendanceService: Update Confirmation
+AttendanceService -> AttendanceController: Confirmation
+AttendanceController -> FrontEnd: Display Updated Attendance
+FrontEnd -> Manager: Show Confirmation Message
+
+
+@enduml

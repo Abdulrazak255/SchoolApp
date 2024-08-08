@@ -1,0 +1,23 @@
+@startuml
+actor Manager
+participant FrontEnd
+participant EmployeeController
+participant EmployeeService
+participant EmployeeRepository
+participant ArchiveService
+participant ArchiveRepository
+
+Manager -> FrontEnd: Request to Delete Employee
+FrontEnd -> EmployeeController: Forward Delete Employee Request
+EmployeeController -> EmployeeService: Process Delete Employee Request
+EmployeeService -> EmployeeRepository: Mark Employee as Deleted
+EmployeeRepository -> EmployeeService: Confirmation of Deletion
+EmployeeService -> ArchiveService: Archive Employee Data
+ArchiveService -> ArchiveRepository: Save Employee Data
+ArchiveRepository -> ArchiveService: Confirmation of Archiving
+ArchiveService -> EmployeeService: Notify About Archived Employee Data
+EmployeeService -> EmployeeController: Notify About Deletion and Archiving
+EmployeeController -> FrontEnd: Send Confirmation Message
+FrontEnd -> Manager: Display Confirmation
+
+@enduml

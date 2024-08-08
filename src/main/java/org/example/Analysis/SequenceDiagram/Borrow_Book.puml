@@ -1,0 +1,26 @@
+@startuml
+actor Borrower
+participant FrontEnd
+participant BookController
+participant LoanService
+participant BookRepository
+participant LoanRepository
+
+Borrower -> FrontEnd: Request Book Borrow
+FrontEnd -> BookController: Forward Borrow Request
+BookController -> LoanService: Process Borrow Request
+LoanService -> BookRepository: Check Book Availability
+BookRepository -> LoanService: Book Status
+
+alt Book Available
+    LoanService -> LoanRepository: Record Borrowing
+    LoanRepository -> LoanService: Borrowing Confirmation
+    LoanService -> BookController: Notify About Borrowing
+    BookController -> FrontEnd: Send Borrow Confirmation
+    FrontEnd -> Borrower: Display Confirmation Message
+else Book Not Available
+    LoanService -> BookController: Notify About Unavailability
+    BookController -> FrontEnd: Send Availability Notification
+    FrontEnd -> Borrower: Display Unavailability Message
+end
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+start
+
+:User logs in;
+:Selects Role (Manager, Teacher, Student, etc.);
+
+if (Role is Manager?) then (yes)
+    :Manager Dashboard;
+    :Manage Users (Add, Update, Delete);
+    :Manage Classes and Subjects;
+    :View Reports;
+    :Manage Library;
+else (no)
+    if (Role is Teacher?) then (yes)
+        :Teacher Dashboard;
+        :Update Grades;
+        :View/Manage Attendance;
+        :View Student Profiles;
+    else (no)
+        if (Role is Student?) then (yes)
+            :Student Dashboard;
+            :View Profile and Grades;
+            :Access Homework and Resources;
+            :Borrow Books from Library;
+        else (no)
+            if (Role is Parent?) then (yes)
+                :Parent Dashboard;
+                :Monitor Child's Progress;
+                :Submit Absence Requests;
+                :View Calendar and Events;
+            else (no)
+                if (Role is Library Manager?) then (yes)
+                    :Library Manager Dashboard;
+                    :Manage Books (Add, Update, Delete);
+                    :Handle Book Loans and Returns;
+                    :Archive Book Data;
+                else (no)
+                    if (Role is Employee?) then (yes)
+                        :Employee Dashboard;
+                        :View Salary and Attendance;
+                    else (no)
+                        if (Role is Visitor?) then (yes)
+                            :Visitor Views Website;
+                            :View School Magazine and Highlights;
+                            :View Subjects and School Information;
+                        endif
+                    endif
+                endif
+            endif
+        endif
+    endif
+endif
+
+:User logs out;
+
+stop
+@enduml

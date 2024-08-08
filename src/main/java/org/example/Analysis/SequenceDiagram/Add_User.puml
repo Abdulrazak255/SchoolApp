@@ -1,0 +1,33 @@
+@startuml
+actor Manager
+participant FrontEnd
+participant Controller
+participant Service
+participant Repository
+participant ArchiveService
+participant ArchiveRepository
+
+alt Adding User (Teacher, Student, Employee, Library Manager)
+    Manager -> FrontEnd: Submit Add User Form
+    FrontEnd -> Controller: Forward Add User Request
+    Controller -> Service: Add User Information
+    Service -> Repository: Save User
+    Repository -> Service: Confirmation of Addition
+
+    alt If User Was Deleted Before
+        Service -> ArchiveService: Check Existing Archived Data
+        ArchiveService -> ArchiveRepository: Retrieve Archived Data
+        ArchiveRepository -> ArchiveService: Provide Archived Data
+        ArchiveService -> ArchiveRepository: Update Archived Data
+        ArchiveRepository -> ArchiveService: Confirmation of Update
+    else If User is New
+        Service -> ArchiveService: Archive New User Data
+        ArchiveService -> ArchiveRepository: Save Data to Archive
+        ArchiveRepository -> ArchiveService: Confirmation of Archiving
+    end
+end
+
+Service -> Controller: Notify About Addition or Archive Update
+Controller -> FrontEnd: Send Notification Message
+FrontEnd -> Manager: Display Notification
+@enduml

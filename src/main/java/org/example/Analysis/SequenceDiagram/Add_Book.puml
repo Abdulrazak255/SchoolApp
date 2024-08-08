@@ -1,0 +1,31 @@
+@startuml
+actor LibraryManager
+participant FrontEnd
+participant BookController
+participant BookService
+participant BookRepository
+participant ArchiveService
+participant ArchiveRepository
+
+LibraryManager -> FrontEnd: Submit Add Book Form
+FrontEnd -> BookController: Forward Add Book Request
+BookController -> BookService: Add Book Information
+BookService -> BookRepository: Save Book
+BookRepository -> BookService: Confirmation of Addition
+
+alt If Book is New
+    BookService -> ArchiveService: Archive Book Data
+    ArchiveService -> ArchiveRepository: Save Book Data
+    ArchiveRepository -> ArchiveService: Confirmation of Archiving
+end
+
+alt If Book is Re-added and Needs Update in Archive
+    BookService -> ArchiveService: Update Archived Book Data
+    ArchiveService -> ArchiveRepository: Update Archived Data
+    ArchiveRepository -> ArchiveService: Confirmation of Update
+end
+
+BookService -> BookController: Notify About New Book or Update
+BookController -> FrontEnd: Send Notification Message
+FrontEnd -> LibraryManager: Display Notification
+@enduml

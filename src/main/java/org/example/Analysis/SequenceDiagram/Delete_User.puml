@@ -1,0 +1,71 @@
+@startuml
+actor Manager
+participant Controller
+participant Service
+participant Repository
+participant ArchiveService
+participant ArchiveRepository
+participant EmailService
+
+alt Deleting Teacher
+    Manager -> Controller: Submit Delete Teacher Request
+    Controller -> Service: Delete Teacher Information
+    Service -> Repository: Delete Teacher
+    Repository -> Service: Confirmation of Deletion
+
+    Service -> ArchiveService: Archive Deleted Teacher Data
+    ArchiveService -> ArchiveRepository: Save Teacher Data to Archive
+    ArchiveRepository -> ArchiveService: Confirmation of Archiving
+end
+
+alt Deleting Student
+    Manager -> Controller: Submit Delete Student Request
+    Controller -> Service: Delete Student Information
+    Service -> Repository: Delete Student
+    Repository -> Service: Confirmation of Deletion
+
+    Service -> ArchiveService: Archive Deleted Student Data
+    ArchiveService -> ArchiveRepository: Save Student Data to Archive
+    ArchiveRepository -> ArchiveService: Confirmation of Archiving
+end
+
+alt Deleting Employee
+    Manager -> Controller: Submit Delete Employee Request
+    Controller -> Service: Delete Employee Information
+    Service -> Repository: Delete Employee
+    Repository -> Service: Confirmation of Deletion
+
+    Service -> ArchiveService: Archive Deleted Employee Data
+    ArchiveService -> ArchiveRepository: Save Employee Data to Archive
+    ArchiveRepository -> ArchiveService: Confirmation of Archiving
+end
+
+alt Deleting Library Manager
+    Manager -> Controller: Submit Delete Library Manager Request
+    Controller -> Service: Delete Library Manager Information
+    Service -> Repository: Delete Library Manager
+    Repository -> Service: Confirmation of Deletion
+
+    Service -> ArchiveService: Archive Deleted Library Manager Data
+    ArchiveService -> ArchiveRepository: Save Library Manager Data to Archive
+    ArchiveRepository -> ArchiveService: Confirmation of Archiving
+end
+
+alt Adding User (Teacher, Student, Employee, Library Manager)
+    Manager -> Controller: Submit Add User Form
+    Controller -> Service: Add User Information
+    Service -> Repository: Save User
+    Repository -> Service: Confirmation of Addition
+
+    alt If User is Re-added and Was Deleted Before
+        Service -> ArchiveService: Check Existing Archived Data
+        ArchiveService -> ArchiveRepository: Retrieve Archived Data
+        ArchiveRepository -> ArchiveService: Provide Archived Data
+        ArchiveService -> ArchiveRepository: Update Archived Data
+        ArchiveRepository -> ArchiveService: Confirmation of Update
+    end
+end
+
+Service -> EmailService: Notify About Deletion, Archiving, or Addition
+EmailService -> Manager: Send Notification Message
+@enduml

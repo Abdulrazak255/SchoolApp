@@ -1,0 +1,305 @@
+@startuml
+
+package Abdulrazak_Alyoussef.intecbrussel {
+
+    ' Core Domain Entities
+    class User {
+        - Long id
+        - String username
+        - String password
+        - UserRole role
+        - BLOB profile_photo
+        - Timestamp date_created
+        + {abstract} String getFullName()
+    }
+
+    class Student extends User {
+        - String first_name
+        - String last_name
+        - Date date_of_birth
+        - BLOB photo
+        - Year enrollment_year
+        - String address
+        - String phone_number
+        + String getFullName()
+    }
+
+    class Teacher extends User {
+        - String first_name
+        - String last_name
+        - Date hire_date
+        - String subject
+        + String getFullName()
+    }
+
+    class Employee extends User {
+        - String employee_id
+        - Decimal(10, 2) salary
+        + String getFullName()
+    }
+
+    class Manager extends User {
+        - String managed_departments
+        + String getFullName()
+    }
+
+    class Librarian extends User {
+        - String library_name
+        + String getFullName()
+    }
+
+    class Parent extends User {
+        - String address
+        - String phone_number
+        + String getFullName()
+    }
+
+    class Class {
+        - Long id
+        - String class_name
+        - Year academic_year
+        - Set<Subject> subjects
+        - Set<Student> students
+        - Set<Teacher> teachers
+    }
+
+    class Subject {
+        - Long id
+        - String subject_name
+        - String subject_code
+        - Set<Class> classes
+        - Set<Teacher> teachers
+    }
+
+    class Attendance {
+        - Long id
+        - Student student
+        - Date date
+        - AttendanceStatus status
+    }
+
+    class Book {
+        - Long id
+        - String isbn
+        - String title
+        - String author
+        - Year published_year
+        - Int copies_available
+        - Set<Loan> loans
+    }
+
+    class Loan {
+        - Long id
+        - Book book
+        - Student student
+        - Date borrowed_date
+        - Date return_date
+        - LoanStatus status
+        - Boolean is_extended
+    }
+
+    class Archive {
+        - Long id
+        - String entity_type
+        - Long entity_id
+        - BLOB data
+        - Timestamp date_archived
+    }
+
+    ' Repositories
+    interface UserRepository {
+        + User save(User user)
+        + Optional<User> findById(Long id)
+        + List<User> findAll()
+        + void deleteById(Long id)
+    }
+
+    interface ClassRepository {
+        + Class save(Class class)
+        + Optional<Class> findById(Long id)
+        + void deleteById(Long id)
+    }
+
+    interface SubjectRepository {
+        + Subject save(Subject subject)
+        + Optional<Subject> findById(Long id)
+        + void deleteById(Long id)
+    }
+
+    interface AttendanceRepository {
+        + List<Attendance> findByStudent(Student student)
+        + void save(Attendance attendance)
+    }
+
+    interface BookRepository {
+        + Book findById(Long id)
+        + Book save(Book book)
+        + void deleteById(Long id)
+    }
+
+    interface LoanRepository {
+        + Loan findById(Long id)
+        + Loan save(Loan loan)
+        + void deleteById(Long id)
+    }
+
+    interface ArchiveRepository {
+        + Archive findById(Long id)
+        + void save(Archive archive)
+    }
+
+    ' Services
+    class UserService {
+        + User createUser(User user)
+        + User getUserById(Long id)
+        + List<User> getAllUsers()
+        + void deleteUserById(Long id)
+    }
+
+    class ClassService {
+        + Class createClass(Class class)
+        + Class updateClass(Class class)
+        + void deleteClass(Long classId)
+        + void addStudentToClass(Student student, Class class)
+        + void addTeacherToClass(Teacher teacher, Class class)
+    }
+
+    class SubjectService {
+        + Subject createSubject(Subject subject)
+        + Subject updateSubject(Subject subject)
+        + void deleteSubject(Long subjectId)
+        + void addClassToSubject(Class class, Subject subject)
+        + void addTeacherToSubject(Teacher teacher, Subject subject)
+    }
+
+    class AttendanceService {
+        + void recordAttendance(Attendance attendance)
+        + List<Attendance> getAttendanceByStudent(Student student)
+    }
+
+    class BookService {
+        + Book addBook(Book book)
+        + Book updateBook(Book book)
+        + void deleteBook(Long bookId)
+        + Loan borrowBook(Book book, Student student)
+        + void returnBook(Loan loan)
+    }
+
+    class LoanService {
+        + Loan createLoan(Loan loan)
+        + Loan getLoanById(Long id)
+        + void deleteLoanById(Long id)
+    }
+
+    class ArchiveService {
+        + void archiveEntity(String entityType, Long entityId, BLOB data)
+        + BLOB retrieveArchivedEntity(Long archiveId)
+    }
+
+    ' Controllers
+    class UserController {
+        + void createUser(User user)
+        + void updateUser(User user)
+        + void deleteUser(Long userId)
+    }
+
+    class ClassController {
+        + void createClass(Class class)
+        + void updateClass(Class class)
+        + void deleteClass(Long classId)
+        + void addStudentToClass(Student student, Class class)
+        + void addTeacherToClass(Teacher teacher, Class class)
+    }
+
+    class SubjectController {
+        + void createSubject(Subject subject)
+        + void updateSubject(Subject subject)
+        + void deleteSubject(Long subjectId)
+        + void addClassToSubject(Class class, Subject subject)
+        + void addTeacherToSubject(Teacher teacher, Subject subject)
+    }
+
+    class AttendanceController {
+        + void recordAttendance(Attendance attendance)
+        + List<Attendance> getAttendanceByStudent(Student student)
+    }
+
+    class BookController {
+        + void addBook(Book book)
+        + void updateBook(Book book)
+        + void deleteBook(Long bookId)
+        + Loan borrowBook(Book book, Student student)
+        + void returnBook(Loan loan)
+    }
+
+    class LoanController {
+        + void createLoan(Loan loan)
+        + Loan getLoanById(Long id)
+        + void deleteLoan(Long loanId)
+    }
+
+    class ArchiveController {
+        + void archiveEntity(String entityType, Long entityId, BLOB data)
+        + BLOB retrieveArchivedEntity(Long archiveId)
+    }
+
+    ' Security
+    class SecurityService {
+        + void authenticate(User user)
+        + void authorize(User user)
+        + User getCurrentUser()
+    }
+
+    ' Relationships
+    User --> Student
+    User --> Teacher
+    User --> Employee
+    User --> Manager
+    User --> Librarian
+    User --> Parent
+
+    Class "1" --> "0..*" Student : contains >
+    Class "1" --> "0..*" Teacher : contains >
+    Class "1" --> "0..*" Subject : includes >
+
+    Student "1" --> "0..*" Attendance : records >
+    Student "1" --> "0..*" Loan : borrows >
+
+    Teacher "1" --> "0..*" Subject : teaches >
+
+    Book "1" --> "0..*" Loan : recorded_in >
+
+    Archive "1" --> "0..*" Book : archives >
+    Archive "1" --> "0..*" Student : archives >
+    Archive "1" --> "0..*" Teacher : archives >
+    Archive "1" --> "0..*" Employee : archives >
+
+    UserService --> UserRepository
+    ClassService --> ClassRepository
+    SubjectService --> SubjectRepository
+    AttendanceService --> AttendanceRepository
+    BookService --> BookRepository
+    LoanService --> LoanRepository
+    ArchiveService --> ArchiveRepository
+
+    UserController --> UserService
+    ClassController --> ClassService
+    SubjectController --> SubjectService
+    AttendanceController --> AttendanceService
+    BookController --> BookService
+    LoanController --> LoanService
+    ArchiveController --> ArchiveService
+
+    SecurityService --> User
+
+    ' Controller to Entity relationships
+    UserController --> User
+    ClassController --> Class
+    SubjectController --> Subject
+    AttendanceController --> Attendance
+    BookController --> Book
+    LoanController --> Loan
+    ArchiveController --> Archive
+}
+
+@enduml

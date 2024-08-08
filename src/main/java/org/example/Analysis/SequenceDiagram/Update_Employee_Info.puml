@@ -1,0 +1,15 @@
+@startuml
+actor Employee
+participant EmployeeController
+participant EmployeeService
+participant EmployeeRepository
+participant FrontEnd
+
+Employee -> EmployeeController: Request Employee Information Update
+EmployeeController -> EmployeeService: Process Update Request
+EmployeeService -> EmployeeRepository: Save Updated Information
+EmployeeRepository -> EmployeeService: Update Confirmation
+EmployeeService -> EmployeeController: Notify About Updated Information
+EmployeeController -> FrontEnd: Send Update Confirmation
+FrontEnd -> Employee: Display Updated Information
+@enduml

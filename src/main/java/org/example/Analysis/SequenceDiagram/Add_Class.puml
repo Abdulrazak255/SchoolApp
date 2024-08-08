@@ -1,0 +1,17 @@
+@startuml
+actor Manager
+participant FrontEnd
+participant ClassController
+participant ClassService
+participant ClassRepository
+
+Manager -> FrontEnd: Submit Add Class Form
+FrontEnd -> ClassController: Forward Add Class Request
+ClassController -> ClassService: Process Add Class Request
+ClassService -> ClassRepository: Save Class Information
+ClassRepository -> ClassService: Confirmation of Addition
+ClassService -> ClassController: Notify About New Class
+ClassController -> FrontEnd: Send Notification Message
+FrontEnd -> Manager: Display Notification
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+actor Manager
+participant ClassManagerController
+participant ClassManagerService
+participant ClassManagerRepository
+participant FrontEnd
+
+Manager -> ClassManagerController: Submit Update Class Form
+ClassManagerController -> ClassManagerService: Process Update Class Request
+ClassManagerService -> ClassManagerRepository: Update Class Information
+ClassManagerRepository -> ClassManagerService: Confirmation of Update
+ClassManagerService -> ClassManagerController: Notify About Updated Class
+ClassManagerController -> FrontEnd: Send Confirmation Message
+FrontEnd -> Manager: Display Confirmation
+@enduml

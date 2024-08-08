@@ -1,0 +1,17 @@
+@startuml
+actor Visitor
+participant FrontEnd
+participant WebsiteController
+participant MagazineService
+participant SubjectService
+
+Visitor -> FrontEnd: Open Website
+FrontEnd -> WebsiteController: Request Initial Data
+WebsiteController -> MagazineService: Retrieve Magazine Content
+WebsiteController -> SubjectService: Retrieve Subjects
+MagazineService -> WebsiteController: Magazine Content
+SubjectService -> WebsiteController: Subjects Data
+WebsiteController -> FrontEnd: Send Magazine Content and Subjects Data
+FrontEnd -> Visitor: Display Magazine and Subjects
+
+@enduml
