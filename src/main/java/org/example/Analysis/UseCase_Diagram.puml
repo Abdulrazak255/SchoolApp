@@ -46,4 +46,5 @@ Visitor -- (View Subjects)
 LibraryManager -- (Manage Book)
 LibraryManager -- (Accept Extension Requests)
 LibraryManager -- (Reject Extension Requests)
+
 @enduml
